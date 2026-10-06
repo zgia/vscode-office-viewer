@@ -1,0 +1,151 @@
+{
+	"name": "vscode-office-viewer",
+	"displayName": "Office Viewer",
+	"description": "View Excel, Word and PowerPoint files in VS Code.",
+	"version": "5.0.0",
+	"publisher": "zgia",
+	"icon": "image/logo.png",
+	"engines": {
+		"vscode": "^1.64.0",
+		"node": ">=22"
+	},
+	"keywords": [
+		"office",
+		"word",
+		"docx",
+		"excel",
+		"xlsx",
+		"csv",
+		"tsv",
+		"ods",
+		"powerpoint",
+		"pptx"
+	],
+	"categories": [
+		"Visualization",
+		"Other"
+	],
+	"bugs": {
+		"url": "https://github.com/zgia/vscode-office-viewer/issues",
+		"email": "zgia@163.com"
+	},
+	"homepage": "https://github.com/zgia/vscode-office-viewer/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zgia/vscode-office-viewer.git"
+	},
+	"activationEvents": [
+		"onCustomEditor:cweijan.officeViewer"
+	],
+	"main": "./out/extension.js",
+	"browser": "./out/extension.web.js",
+	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "cweijan.officeViewer",
+				"displayName": "Office Viewer",
+				"selector": [
+					{
+						"filenamePattern": "*.xls"
+					},
+					{
+						"filenamePattern": "*.xlsx"
+					},
+					{
+						"filenamePattern": "*.xlsm"
+					},
+					{
+						"filenamePattern": "file:/**/*.csv"
+					},
+					{
+						"filenamePattern": "vscode-vfs:/**/*.csv"
+					},
+					{
+						"filenamePattern": "vscode-remote:/**/*.csv"
+					},
+					{
+						"filenamePattern": "*.tsv"
+					},
+					{
+						"filenamePattern": "*.ods"
+					},
+					{
+						"filenamePattern": "file:/**/*.docx"
+					},
+					{
+						"filenamePattern": "vscode-vfs:/**/*.docx"
+					},
+					{
+						"filenamePattern": "vscode-remote:/**/*.docx"
+					},
+					{
+						"filenamePattern": "*.dotx"
+					},
+					{
+						"filenamePattern": "*.pptx"
+					},
+					{
+						"filenamePattern": "*.pptm"
+					}
+				]
+			}
+		]
+	},
+	"scripts": {
+		"dev": "vite --mode=development",
+		"dev:web": "OFFICE_EXTENSION_TARGET=web vite --mode=development",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+		"build": "vite build --mode=production",
+		"package": "vsce package --no-dependencies",
+		"publish": "vsce publish --no-dependencies && ovsx publish --no-dependencies",
+		"audit": "npm audit --omit=dev",
+		"vscode:prepublish": "npm run build"
+	},
+	"devDependencies": {
+		"@types/node": "^26.1.0",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"@types/vscode": "^1.64.0",
+		"@typescript-eslint/eslint-plugin": "^8.62.1",
+		"@typescript-eslint/parser": "^8.62.1",
+		"@vitejs/plugin-react": "^6.0.2",
+		"@vscode/vsce": "^4.0.0",
+		"esbuild": "^0.28.1",
+		"eslint": "^9.39.4",
+		"eslint-plugin-import-x": "^4.16.2",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"eslint-plugin-react-refresh": "^0.5.3",
+		"eslint-plugin-unused-imports": "^4.4.1",
+		"globals": "^17.7.0",
+		"less": "^4.2.0",
+		"ovsx": "^0.10.8",
+		"vite": "^8.0.16"
+	},
+	"dependencies": {
+		"@ant-design/icons": "^5.3.5",
+		"@cweijan/exceljs": "^5.0.2",
+		"@eigenpal/docx-editor-react": "^1.9.0",
+		"@vscode/codicons": "^0.0.45",
+		"antd": "^5.15.4",
+		"axios": "^1.18.1",
+		"buffer": "^6.0.3",
+		"chart.js": "^4.5.1",
+		"iconv-lite": "^0.6.3",
+		"jszip": "^3.10.1",
+		"pptxviewjs": "^1.1.9",
+		"prosemirror-commands": "^1.7.1",
+		"prosemirror-dropcursor": "^1.8.2",
+		"prosemirror-history": "^1.5.0",
+		"prosemirror-keymap": "^1.2.3",
+		"prosemirror-model": "^1.25.9",
+		"prosemirror-state": "^1.4.4",
+		"prosemirror-tables": "^1.8.5",
+		"prosemirror-transform": "^1.12.0",
+		"prosemirror-view": "^1.41.9",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"udsv": "^0.5.3",
+		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+	}
+}
