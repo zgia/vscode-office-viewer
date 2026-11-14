@@ -2,7 +2,7 @@
 	"name": "office-viewer",
 	"displayName": "Office Viewer",
 	"description": "View Excel, Word and PowerPoint files in VS Code.",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"publisher": "zgia",
 	"icon": "images/logo.png",
 	"engines": {

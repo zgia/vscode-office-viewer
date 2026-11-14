@@ -2,7 +2,7 @@ import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { App, Spin } from "antd";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { handler, vscodeApi } from "../../util/vscode.ts";
+import { handler } from "../../util/vscode.ts";
 import { isVscodeEditorDark, observeVscodeThemeChange } from "../../util/vscodeTheme.ts";
 import { loadOfficeBuffer } from "../../util/loadOfficeContent.ts";
 import SponsorBar from '../components/SponsorBar';
@@ -17,40 +17,6 @@ import { initExcelLocale, t } from './excel_i18n';
 initExcelLocale();
 
 type ExcelColorMode = 'adaptive' | 'light';
-
-const EXCEL_COLOR_MODE_KEY = 'office-excel-color-mode';
-const LEGACY_DARK_MODE_KEY = 'office-dark-mode';
-
-function loadExcelColorMode(): ExcelColorMode {
-    const state = vscodeApi?.getState?.() as { excelColorMode?: ExcelColorMode } | undefined;
-    if (state?.excelColorMode === 'light' || state?.excelColorMode === 'adaptive') {
-        return state.excelColorMode;
-    }
-    try {
-        const saved = localStorage.getItem(EXCEL_COLOR_MODE_KEY);
-        if (saved === 'light' || saved === 'adaptive') {
-            return saved;
-        }
-        const legacy = localStorage.getItem(LEGACY_DARK_MODE_KEY);
-        if (legacy === '1') {
-            return 'adaptive';
-        }
-        if (legacy === '0') {
-            return 'light';
-        }
-    } catch { }
-    return 'light';
-}
-
-function saveExcelColorMode(mode: ExcelColorMode) {
-    try {
-        localStorage.setItem(EXCEL_COLOR_MODE_KEY, mode);
-    } catch { }
-    if (vscodeApi?.setState) {
-        const prev = (vscodeApi.getState?.() ?? {}) as Record<string, unknown>;
-        vscodeApi.setState({ ...prev, excelColorMode: mode });
-    }
-}
 
 type ExcelViewState = { ri: number; ci: number; sheetIndex: number };
 
@@ -97,7 +63,7 @@ function restoreViewState(spreadSheet: Spreadsheet, saved: ExcelViewState) {
 function ExcelViewer() {
     const { message } = App.useApp();
     const [loading, setLoading] = useState(true)
-    const [colorMode, setColorMode] = useState(loadExcelColorMode)
+    const [colorMode, setColorMode] = useState<ExcelColorMode>('adaptive')
     const [vscodeDark, setVscodeDark] = useState(isVscodeEditorDark)
     const [findPanelOpen, setFindPanelOpen] = useState(false)
     const findPanelRef = useRef(false)
@@ -137,7 +103,6 @@ function ExcelViewer() {
     const toggleColorMode = () => {
         setColorMode(prev => {
             const next: ExcelColorMode = prev === 'adaptive' ? 'light' : 'adaptive';
-            saveExcelColorMode(next);
             if (next === 'adaptive') {
                 setVscodeDark(isVscodeEditorDark());
             }

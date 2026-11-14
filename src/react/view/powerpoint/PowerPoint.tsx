@@ -2,7 +2,8 @@ import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { Alert, Layout, Spin } from "antd";
 import { PPTXViewer } from "pptxviewjs";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { handler, loadDarkMode, applyDarkMode } from "../../util/vscode";
+import { handler } from "../../util/vscode";
+import { isVscodeEditorDark, observeVscodeThemeChange } from "../../util/vscodeTheme";
 import { loadOfficeBuffer } from "../../util/loadOfficeContent";
 import Sponsor from '../components/Sponsor';
 import './PowerPoint.css';
@@ -98,18 +99,23 @@ export default function PowerPoint() {
     const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const [dragging, setDragging] = useState(false);
-    const [dark, setDark] = useState(loadDarkMode);
+    const [darkOverride, setDarkOverride] = useState<boolean | null>(null);
+    const [vscodeDark, setVscodeDark] = useState(isVscodeEditorDark);
+    const dark = darkOverride ?? vscodeDark;
+
+    useEffect(() => {
+        if (darkOverride !== null) return;
+        return observeVscodeThemeChange(() => setVscodeDark(isVscodeEditorDark()));
+    }, [darkOverride]);
 
     useEffect(() => {
         document.body.classList.toggle('office-dark', dark);
+        return () => document.body.classList.remove('office-dark');
     }, [dark]);
 
     const toggleDark = () => {
-        setDark(prev => {
-            const next = !prev;
-            applyDarkMode(next);
-            return next;
-        });
+        const next = !dark;
+        setDarkOverride(next);
     };
 
     useEffect(() => {

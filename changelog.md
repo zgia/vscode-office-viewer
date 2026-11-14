@@ -1,5 +1,13 @@
 # Change log
 
+# 5.0.1 2026-11-14
+
+Extension:
+
+- Follow the VS Code light or dark theme by default in Excel, Word and PowerPoint previews, including theme changes while a preview is open.
+- Keep manual theme choices within the current preview; reopening a preview follows VS Code again instead of restoring an old light-mode preference.
+- Recognize VS Code high-contrast light and dark themes.
+
 # 5.0.0 2026-10-6
 
 Office Viewer is now a strictly read-only viewer for Excel, Word and PowerPoint files.

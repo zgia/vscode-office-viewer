@@ -127,6 +127,10 @@ test/                       历史遗留的 Excel 性能脚本，无测试框架
 
 ### 各查看器要点
 
+- **主题**：每次打开时三个查看器默认跟随 VS Code 主题，手动切换仅影响当前预览，不读取或保存旧主题偏好。
+  Excel / Word 使用 `adaptive` 模式，
+  PowerPoint 用 `null` 表示自动跟随。主题检测与变化监听在
+  `src/react/util/vscodeTheme.ts`，优先识别 VS Code 的 body 主题类（含高对比度）。
 - **Excel**：`excel_reader.ts` 按扩展名分流读取 —— CSV/TSV 走 `udsv` + `csvEncoding.ts`（含 GBK 自动识别），
   `.xls` / `.ods` 走 SheetJS，其余走 `@cweijan/exceljs`；样式与元数据在 `excel_styles.ts` /
   `excel_meta.ts` / `excel_hyperlink.ts` / `excel_images.ts` / `excel_validation.ts` / `excel_protection.ts`

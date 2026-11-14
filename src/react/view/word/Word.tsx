@@ -3,38 +3,12 @@ import { Alert, Spin } from "antd";
 import { DocxEditor } from "@eigenpal/docx-editor-react";
 import "@eigenpal/docx-editor-react/styles.css";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { handler, vscodeApi } from "../../util/vscode";
+import { handler } from "../../util/vscode";
 import { loadOfficeBuffer } from "../../util/loadOfficeContent";
 import SponsorBar from "../components/SponsorBar";
 import "./Word.css";
 
 type WordColorMode = "light" | "adaptive";
-
-const WORD_COLOR_MODE_KEY = "office-word-color-mode";
-
-function loadWordColorMode(): WordColorMode {
-    const state = vscodeApi?.getState?.() as { wordColorMode?: WordColorMode } | undefined;
-    if (state?.wordColorMode === "light" || state?.wordColorMode === "adaptive") {
-        return state.wordColorMode;
-    }
-    try {
-        const saved = localStorage.getItem(WORD_COLOR_MODE_KEY);
-        if (saved === "light" || saved === "adaptive") {
-            return saved;
-        }
-    } catch { }
-    return "light";
-}
-
-function saveWordColorMode(mode: WordColorMode) {
-    try {
-        localStorage.setItem(WORD_COLOR_MODE_KEY, mode);
-    } catch { }
-    if (vscodeApi?.setState) {
-        const prev = (vscodeApi.getState?.() ?? {}) as Record<string, unknown>;
-        vscodeApi.setState({ ...prev, wordColorMode: mode });
-    }
-}
 
 interface WordOpenPayload {
     path?: string;
@@ -46,7 +20,7 @@ interface WordOpenPayload {
 }
 
 export default function Word() {
-    const [colorMode, setColorMode] = useState<WordColorMode>(loadWordColorMode);
+    const [colorMode, setColorMode] = useState<WordColorMode>("adaptive");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [documentBuffer, setDocumentBuffer] = useState<ArrayBuffer | undefined>(undefined);
@@ -60,7 +34,6 @@ export default function Word() {
     const toggleColorMode = () => {
         setColorMode((prev) => {
             const next: WordColorMode = prev === "adaptive" ? "light" : "adaptive";
-            saveWordColorMode(next);
             return next;
         });
     };

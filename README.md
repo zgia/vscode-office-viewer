@@ -20,6 +20,8 @@
 
 查看器提供的阅读辅助功能：查找、复制、筛选、冻结窗格、切换工作表、超链接跳转、明暗主题切换，以及自动调整列宽（Excel）。
 
+每次打开预览时自动跟随 VS Code 的浅色或深色主题，自动模式下切换 VS Code 主题也会同步更新。仍可使用预览中的主题按钮手动切换；手动选择仅影响当前预览，关闭后重新打开会恢复自动跟随。
+
 ## Sponsor
 
 [![Database Client](https://doc.database-client.com/public/logo.png)](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)

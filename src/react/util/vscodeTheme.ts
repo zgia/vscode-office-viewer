@@ -33,11 +33,19 @@ function luminance(r: number, g: number, b: number): number {
 }
 
 export function getVscodeThemeColor(name: string, fallback: string): string {
-    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const value = getComputedStyle(document.body).getPropertyValue(name).trim();
     return value || fallback;
 }
 
 export function isVscodeEditorDark(): boolean {
+    // VS Code supplies these classes before the webview application starts.
+    const classes = document.body.classList;
+    if (classes.contains('vscode-light') || classes.contains('vscode-high-contrast-light')) {
+        return false;
+    }
+    if (classes.contains('vscode-dark') || classes.contains('vscode-high-contrast')) {
+        return true;
+    }
     const bg = getVscodeThemeColor('--vscode-editor-background', '#ffffff');
     const rgb = parseRgb(bg);
     if (!rgb) {
@@ -62,7 +70,7 @@ export function observeVscodeThemeChange(onChange: () => void): () => void {
     const headObserver = new MutationObserver(schedule);
     headObserver.observe(document.head, { childList: true, subtree: true, attributes: true });
     const bodyObserver = new MutationObserver(schedule);
-    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
+    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class', 'style', 'data-vscode-theme-kind'] });
     const rootObserver = new MutationObserver(schedule);
     rootObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style'] });
     return () => {
